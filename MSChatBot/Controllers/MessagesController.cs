@@ -18,11 +18,7 @@ namespace MSChatBot
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
-            }
-            else
-            {
-                HandleSystemMessage(activity);
+                await Conversation.SendAsync(activity, () => new MSChatBotLuisDialog());
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
@@ -40,6 +36,13 @@ namespace MSChatBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
+                string replyMessage = string.Empty;
+                replyMessage += $"Hi there\n\n";
+                replyMessage += $"I am MeBot. Designed to answer questions about this blog.  \n";
+                replyMessage += $"Currently I have following features  \n";
+                replyMessage += $"* Ask question about the author of this blog: Try 'Who is Ankit'\n\n";
+                replyMessage += $"I will get more intelligent in future.";
+                return message.CreateReply(replyMessage);
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
